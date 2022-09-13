@@ -1,13 +1,19 @@
-import GPT3ChatBot
-import config
+from GPT3ChatBot import chatBot
+import config #Add a local file called config.py (optinal)
 
+apiKey = config.api_key
 print('Starting things up...')
-print(f'API Key set is: {config.api_key}')
+chatBot = chatBot(apiKey)
+voices = chatBot.ListVoices(False)
+chatBot.SetVoice(voices[1].id)
+
 try:
     print('Write your question. Enter to continue. Ctrl-c to quit.')
+    #chatBot.TestVoice("wassup")
     while True:
         text = input()
-        print(f'You wrote: {text}')
+        chatBot.Chat(text)
+
 except KeyboardInterrupt:
     pass
 
