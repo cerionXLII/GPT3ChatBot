@@ -1,5 +1,5 @@
 from GPT3ChatBot import chatBot
-import config #Add a local file called config.py (optinal)
+import config #Add a local file called config.py and set the variable api_key = "YOUR API KEY"
 
 apiKey = config.api_key
 print('Starting things up...')
