@@ -1,17 +1,20 @@
 import openai
 import pyttsx3
+
+
 class chatBot():
     def __init__(self, apiKey):
-        openai.api_key = apiKey
-        self.chatLog = ''
+        openai.api_key = apiKey       
         self.voice = pyttsx3.init()
         self.voice.setProperty('rate', 185)
+        self.history = []
+        self.maxRowsInHistory = 42
     
     def Chat(self, message, printText=True, useSound=True):
-        self.chatLog += 'You: ' + message + '\n'
+        self.history.append('You: ' + message + '\n')
         response = openai.Completion.create(
                       model="text-davinci-002",
-                      prompt= self.chatLog,
+                      prompt= self.GetChatHistory(),
                       temperature=0.5,
                       max_tokens=100,
                       top_p=1.0,
@@ -20,7 +23,7 @@ class chatBot():
                       stop=["You:"]
                     )
         responseText = response.choices[0].text.lstrip('Friend:\n\n')
-        self.chatLog += 'Friend:\n\n' + responseText + '\n'
+        self.history.append('Friend:\n\n' + responseText + '\n')
         
         if printText:
             print(responseText)
@@ -29,7 +32,18 @@ class chatBot():
             self.voice.say(responseText)
             self.voice.runAndWait()
         
+        #Prune history to avoid overflow
+        self.PruneHistory()
+        
         return responseText
+
+    def GetChatHistory(self):
+        return ''.join(self.history)
+
+    def PruneHistory(self):
+        while(len(self.history) > self.maxRowsInHistory):
+            self.history.pop()
+
     
     def ListVoices(self, testVoices = True):
         currentVoiceId = self.voice.getProperty('voice')
@@ -56,4 +70,5 @@ class chatBot():
         
     
     def ClearChatLog(self):
+        self.history.clear()
         self.chatLog = ''

@@ -8,13 +8,13 @@ voices = chatBot.ListVoices(False)
 chatBot.SetVoice(voices[1].id)
 
 try:
-    print('Write your question. Enter to continue. Ctrl-c to quit.')
-    #chatBot.TestVoice("wassup")
+    print('Write your question followed by enter. Ctrl-c to quit.')
+
     while True:
         text = input()
-        chatBot.Chat(text)
+        chatBot.Chat(text)        
 
 except KeyboardInterrupt:
     pass
 
-print('Chatbot terminated...')
+print('Chat bot terminated...')
