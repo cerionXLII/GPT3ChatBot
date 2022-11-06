@@ -9,6 +9,7 @@ class chatBot():
         self.voice.setProperty('rate', 185)
         self.history = []
         self.maxRowsInHistory = 42
+        self.maxPromtLength = 4096
     
     def Chat(self, message, printText=True, useSound=True):
         self.history.append('You: ' + message + '\n')
@@ -16,10 +17,10 @@ class chatBot():
                       model="text-davinci-002",
                       prompt= self.GetChatHistory(),
                       temperature=0.5,
-                      max_tokens=100,
+                      max_tokens=150,
                       top_p=1.0,
                       frequency_penalty=0.5,
-                      presence_penalty=0.0,
+                      presence_penalty=0.5,
                       stop=["You:"]
                     )
         responseText = response.choices[0].text.lstrip('Friend:\n\n')
@@ -38,7 +39,7 @@ class chatBot():
         return responseText
 
     def GetChatHistory(self):
-        return ''.join(self.history)
+        return ''.join(self.history)[-self.maxPromtLength:]
 
     def PruneHistory(self):
         while(len(self.history) > self.maxRowsInHistory):
