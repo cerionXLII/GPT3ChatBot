@@ -14,7 +14,7 @@ class chatBot():
     def Chat(self, message, printText=True, useSound=True):
         self.history.append('You: ' + message + '\n')
         response = openai.Completion.create(
-                      model="text-davinci-002",
+                      model="text-davinci-003",
                       prompt= self.GetChatHistory(),
                       temperature=0.5,
                       max_tokens=150,
@@ -22,8 +22,8 @@ class chatBot():
                       frequency_penalty=0.5,
                       presence_penalty=0.5,
                       stop=["You:"]
-                    )
-        responseText = response.choices[0].text.lstrip('Friend:\n\n')
+                    )        
+        responseText = response.choices[0].text.lstrip('Friend:\n\n').lstrip('Bot:')
         self.history.append('Friend:\n\n' + responseText + '\n')
         
         if printText:
