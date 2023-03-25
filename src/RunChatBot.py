@@ -12,7 +12,8 @@ try:
 
     while True:
         text = input()
-        chatBot.Chat(text)        
+        chatBot.Chat(text)  #This will use the new GPT-4 API
+        #chatBot.ChatLegacy(text) #Old version of the API GPT-3    
 
 except KeyboardInterrupt:
     pass
